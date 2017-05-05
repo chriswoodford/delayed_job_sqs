@@ -28,7 +28,7 @@ module Delayed
     def job_say(job, text, level = DEFAULT_LOG_LEVEL)
       text = "Job #{job.name} #{text}"
       say text, level
-    end    
+    end
   end
 
   module Backend
@@ -39,9 +39,7 @@ module Delayed
           # configure our gem after Rails completely boots so that we have
           # access to any config/initializers that were run
           config.after_initialize do
-            AWS::Rails.setup
-
-            Delayed::Worker.sqs = AWS::SQS.new
+            Delayed::Worker.sqs = Aws::SQS::Resource.new
             Delayed::Worker.configure {}
           end
         end
@@ -55,10 +53,10 @@ module Delayed
             raise "AWS Yaml configuration file is missing a section"
           end
 
-          AWS.config(cfg.keys[0])
+          Aws.config.update(cfg.keys[0])
         end
 
-        Delayed::Worker.sqs = AWS::SQS.new
+        Delayed::Worker.sqs = Aws::SQS::Resource.new
         Delayed::Worker.configure {}
       end
     end

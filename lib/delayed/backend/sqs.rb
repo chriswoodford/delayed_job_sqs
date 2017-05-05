@@ -18,10 +18,11 @@ module Delayed
         field :queue,       :type => String
 
         def initialize(data = {})
-          #puts "[init] Delayed::Backend::Sqs"
+          puts "[init] Delayed::Backend::Sqs"
+          puts data.inspect
           @msg = nil
 
-          if data.is_a?(AWS::SQS::ReceivedMessage)
+          if data.is_a?(Aws::SQS::Message)
             @msg = data
             data = JSON.load(data.body)
           end
@@ -55,7 +56,7 @@ module Delayed
         end
 
         def save
-          #puts "[SAVE] #{@attributes.inspect}"
+          puts "[SAVE] #{@attributes.inspect}"
 
           if @attributes[:handler].blank?
             raise "Handler missing!"
@@ -118,3 +119,4 @@ module Delayed
     end
   end
 end
+

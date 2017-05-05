@@ -19,7 +19,7 @@ To start using delayed_job_sqs, you need to sign up for an AWS account and setup
 Or if using Rails, create config/initializers/aws-sdk.rb and put the following into the file:
 
 ```ruby
-AWS.config({
+Aws.config.update({
   access_key_id: '<your access key>',
   secret_access_key: '<your secret key>',
 })
